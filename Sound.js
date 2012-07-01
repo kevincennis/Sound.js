@@ -408,10 +408,7 @@ typeof function(window){
 	// Compressors are initialized with a ratio of 1 and a threshold of zero,
 	// which means it's off. Both values need to be set for the compressor to function.
 	Sound.prototype.compressor = function( param, val ){
-	    if ( !param ) {
-	        this.get('compressorNode').threshold.value = 0;
-	        return this;
-	    }
+	    if ( !param ) return this;
 	    if ( typeof val === 'undefined' && typeof param === 'string' && param !== 'reduction' ){
 	    	param = presets.compressor[param] || undefined;
 	    }
