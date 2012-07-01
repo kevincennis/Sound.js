@@ -1,4 +1,5 @@
-+function(window){
+// Ultra-Hipster IIFE
+typeof function(window){
 
 	// References to the 'private' data properties of each Sound instance.
 	// Keyed by _guid.
@@ -222,7 +223,7 @@
 	// sound.volume(0.8); // returns `this`
 	//
 	// Ex: Get the current track volume.
-	// sound.position(); // returns 0.8
+	// sound.volume(); // returns 0.8
 	Sound.prototype.volume = function( volume ){
 	    if ( typeof volume === 'undefined' ) return this.get('volume');
 	    volume = volume > 1.5 ? 1.5 : volume < 0 ? 0 : volume;
@@ -233,7 +234,7 @@
 	}; 
 	
 	// Utility method for 'animations' or tweens. Really an internal thing.
-	// Used for fades. Returns this.
+	// Used for fades. Returns `this`.
 	//
 	// Ex: Just take a look at Sound.prototype.fade.
 	Sound.prototype.animate = function( func, duration, callback ){
@@ -282,7 +283,7 @@
 	// Returns `this`.
 	//
 	// Ex: Fade from the current volume to 0 over a 3 second period.
-	// sound.fade(0, 3000, function(){
+	// sound.fadeTo(0, 3000, function(){
 	//     sound.pause();
 	// });
 	Sound.prototype.fadeTo = function( end, duration, callback ){
@@ -295,7 +296,7 @@
 	// Returns `this`.
 	//
 	// Ex: Fade out from the current volume over an 8 second period.
-	// sound.fade(8000, function(){
+	// sound.fadeOut(8000, function(){
 	//     sound.pause();
 	// });
 	Sound.prototype.fadeOut = function( duration, callback ){
@@ -308,10 +309,10 @@
 	// Call it with no arguments to turn tremolo off.
 	//
 	// Ex: 150ms tremolo with medium intensity.
-	// sound.tremolo(150, 0.5);
+	// sound.tremolo(150, 0.5); // returns `this`
 	//
 	// Ex: Turn off the tremolo effect.
-	// sound.tremolo();
+	// sound.tremolo(); // returns `this`
 	Sound.prototype.tremolo = function( speed, intensity ){
 	    var self = this, tremolo, down, up;
 	    if ( this.get('currentTremolo') ) this.get('currentTremolo').kill();
@@ -361,7 +362,7 @@
 	// Ex: Set multiple compressor properties.
 	// sound.compressor({ratio: 4, threshold: 24, knee: 6}); // returns `this`.
 	//
-	// Ex: Turn the compressor off ( this just sets threshold to 0 )
+	// Ex: Turn the compressor off (this just sets threshold to 0)
 	// sound.compressor(); // returns `this`.
 	//
 	// If you you the last example as your lazy method to disable compression,
@@ -377,7 +378,7 @@
 	    if ( this.get('compressorNode').threshold.value == 0 )
 	    	this.get('compressorNode').threshold.value = this.get('threshold');
 	    switch ( param ){
-	    	// The speed in which the compressor begins attenuating
+	    	// The speed with which the compressor begins attenuating
 	    	// once the signal has risen above the threshold.
 	    	// Measured in seconds, ranging from 0 to 1.
 	    	// Default (in Chrome) is .003.
@@ -385,7 +386,7 @@
 	            if ( typeof val === 'undefined' ) return this.get('compressorNode').attack.value;
 	            this.get('compressorNode').attack.value = val;
 	            break;
-	        // The speed in which the compressor stops attenuating
+	        // The speed with which the compressor stops attenuating
 	        // once the signal has fallen below the threshold.
 	        // Measured in seconds, ranging from 0 to 1.
 	        // Default (in Chrome) is .025.
@@ -393,7 +394,7 @@
 	            if ( typeof val === 'undefined') return this.get('compressorNode').release.value;
 	            this.get('compressorNode').release.value = val;
 	            break;
-	        // The point level at which the compressor will begin attenuating.
+	        // The level at which the compressor will begin attenuating.
 	        // Measured in dB, ranging from 0 to -100.
 	        // Default (in Chrome) is -24.
 	        case 'threshold':
@@ -408,7 +409,7 @@
 	            if ( typeof val === 'undefined') return this.get('compressorNode').ratio.value;
 	            this.get('compressorNode').ratio.value = val;
 	            break;
-	        // The range above the threshold where the curve transitions to the ratio.
+	        // The point above the threshold where the curve transitions to the ratio.
 	        // Measured in decibels, from 0 to 40.
 	        // Default (in Chrome) is 30, which, again, seems pretty high.
 	        case 'knee':
@@ -423,14 +424,14 @@
 	};
 	
 	// Create a new convolver (think "reverb")
-	// Accepts an effect name (must be unique), url to the impulse response,
+	// Accepts an effect name (must be unique), a url to the impulse response,
 	// and an optional gain value (from 0 to 1) for the effect. Returns `this`.
 	//
 	// It makes zero sense to use <audio> elements for a convolver node,
 	// so this method uses AJAX. Because of that, your impulse response
 	// must be on the same domain as your page.
 	//
-	// Ex: create a new reverb effect named `plate` and set its gain to 0.4
+	// Ex: create a new reverb effect named `plate` and set its gain to 0.4.
 	// sound.addConvolver('plate', 'plate.wav', 0.8);
 	Sound.prototype.addConvolver = function( name, url, gain ){
 	    var self = this, request = new XMLHttpRequest();
