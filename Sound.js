@@ -427,7 +427,7 @@ typeof function(window){
 	
 	// Create a new convolver (think "reverb")
 	// Accepts an effect name (must be unique), a url to the impulse response,
-	// and an optional gain value (from 0 to 1) for the effect. Returns `this`.
+	// an optional gain value (from 0 to 1) for the effect, and an optional callback. Returns `this`.
 	//
 	// It makes zero sense to use <audio> elements for a convolver node,
 	// so this method uses AJAX. Because of that, your impulse response
@@ -435,9 +435,16 @@ typeof function(window){
 	//
 	// Ex: create a new reverb effect named `plate` and set its gain to 0.4.
 	// sound.addConvolver('plate', 'plate.wav', 0.8);
-	Sound.prototype.addConvolver = function( name, url, gain ){
+	//
+	// Ex: Add a new convolver, and begin playback when it's loaded.
+	// sound.addConvonvolver('plate', 'plate.wav', 0.7, function(){
+	//     this.play();
+	// });
+	Sound.prototype.addConvolver = function( name, url, gain, callback ){
 	    var self = this, request = new XMLHttpRequest();
 	    if ( this.get('convolvers')[name] ) return this;
+	    callback = callback ? callback : typeof gain === 'function' ? gain : undefined;
+	    gain = typeof gain !== 'function' ? gain : undefined;
 	    this.get('convolvers')[name] = {};
 	    this.get('convolvers')[name].gainNode = this.get('context').createGainNode();
 	    this.get('convolvers')[name].gainNode.connect(this.get('context').destination);
@@ -459,6 +466,7 @@ typeof function(window){
 	            	self.get('convolvers')[name].convolver.buffer = buffer;
 	            	self.get('convolvers')[name].ready = true;
 	            	self.trigger('fxLoaded', name);
+	            	if ( typeof callback == 'function' ) callback.call( self );
 	            };
 	            if ( self.get('ready') ) connect();
 	            else self.on('ready', connect);
