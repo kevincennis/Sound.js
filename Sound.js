@@ -384,7 +384,7 @@ typeof function(window){
 	        this.get('compressorNode').threshold.value = 0;
 	        return this;
 	    }
-	    if ( !val && typeof param === 'string' ){
+	    if ( typeof val === 'undefined' && typeof param === 'string' ){
 	    	param = presets.compressor[param] || undefined;
 	    }
 	    if ( typeof param === 'object' )
