@@ -21,38 +21,63 @@ typeof function(window){
 	//
 	// All Sound methods that do not explicitly return a value 
 	// will return `this` for chainability.
+	//
+	// Users really shouldn't need to worry about anything that goes on in the constructor.
 	window.Sound = function( url ){
 	    var self = this, 
 	        data = {}, 
 	        guid = Date.now() + '_' + Math.floor( Math.random() * 0xFFFFFFFF ).toString(16);
 	    this.__defineGetter__('_guid', function(){ return guid });
+	    // Storage for all event bindings
 	    data.events = {};
+	    // URL of the sound resource
 	    data.url = url;
+	    // AudioCOntext object
 	    data.context = new webkitAudioContext();
+	    // Compressor
 	    data.compressorNode = data.context.createDynamicsCompressor();
+	    // Panner
 	    data.panner = data.context.createPanner();
+	    // Use equal-power panning
 	    data.panner.panningModel = webkitAudioPannerNode.EQUALPOWER;
+	    // Set pan position to 50/50
 	    data.panner.setPosition(0,0,.1);
+	    // Gain node used internally for things like tremolo
 	    data.gainNode = data.context.createGainNode();
+	    // Gain node for the user. For sound.volume() and sound.fade()
 	    data.volumeNode = data.context.createGainNode();
+	    // Analyser node.
 	    data.analyser = data.context.createAnalyser();
+	    // Set analyser smoothing to a reasonable medium value
 	    data.analyser.smoothingTimeConstant = 0.5;
+	    // Set FFT size ( needs to be a power of two )
 	    data.analyser.fftSize = 128;
+	    // Processor
 	    data.processor = data.context.createJavaScriptNode(2048, 1, 1);
+	    // Array to hold annalyser info
 	    data.freqByteData = new Uint8Array(data.analyser.frequencyBinCount);
+	    // The <audio> element
 	    data.element = document.createElement('audio');
+	    // Storage for each convolver created by this Sound instance
 	    data.convolvers = {};
+	    // Has the sound been loaded?
 	    data.ready = false;
+	    // Current volume
 	    data.volume = 1;
+	    // Set the element src attribute
 	    data.element.src = data.url;
+	    // Has the user set any compression values yet?
 	    data.initCompressor = false;
+	    // Call the `connect` method when the sound is ready
 	    data.element.addEventListener('canplaythrough', function(){
 	        self.connect();
 	    }, false);
+	    // Call `gainMeter` and `compressionMeter` 
 	    data.processor.onaudioprocess = function(){
 	        self.gainMeter();
 	        self.compressionMeter();
 	    };
+	    // Save a reference to this instance's data in the storage object
 	    storage[guid] = data;
 	};
 	
