@@ -1,7 +1,7 @@
 // Ultra-Hipster IIFE
 typeof function(window){
 
-	// References to the 'private' data properties of each Sound instance.
+	// References to the 'private' data vars created in the Sound constructor.
 	// Keyed by _guid.
 	var storage = {};
 	
