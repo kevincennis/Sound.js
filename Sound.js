@@ -43,6 +43,7 @@ typeof function(window){
 	    data.ready = false;
 	    data.volume = 1;
 	    data.element.src = data.url;
+	    data.initCompressor = false;
 	    data.element.addEventListener('canplaythrough', function(){
 	        self.connect();
 	    }, false);
@@ -159,7 +160,7 @@ typeof function(window){
 	    this.get('gainNode').connect( this.get('analyser') );
 	    this.get('analyser').connect( this.get('processor') );
 	    this.get('processor').connect( this.get('context').destination );
-	    this.compressor({ratio:1, threshold:0});
+	    if ( !this.get('initCompressor') ) this.compressor({ratio:1, threshold:0});
 	    this.set('ready', true);
 	    this.trigger('ready');
 	    return this;
@@ -432,6 +433,7 @@ typeof function(window){
 	        case 'reduction':
 	            return this.get('compressorNode').reduction.value;
 	    }
+	    if ( !this.get('initCompressor') ) this.set('initCompressor', true);
 	    return this;
 	};
 	
