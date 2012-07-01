@@ -8,7 +8,7 @@ Check out the demo [here](http://kevincennis.com/sound/)
 
 ####Featues:
 
-- Uses <audio> elements instead of XHR to enable streaming and cross-domain loading. 
+- Uses `<audio>` elements instead of XHR to enable streaming and cross-domain loading. 
 - Automaticallys create and connect analysers, compressors, reverbs, and gain nodes. Sensibly.
 - Provides events for real-time metering
 - Convolution effects.
