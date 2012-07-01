@@ -4,6 +4,8 @@ Sound.js
 Web Audio with (slightly) less confusion
 ---------------------------------------
 
+Check out the demo [here](http://kevincennis.com/sound/)
+
 ####Featues:
 
 - Uses <audio> elements instead of XHR to enable streaming and cross-domain loading. 
