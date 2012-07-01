@@ -4,6 +4,14 @@ typeof function(window){
 	// References to the 'private' data vars created in the Sound constructor.
 	// Keyed by _guid.
 	var storage = {};
+
+	// Default settings for fx.
+	var presets = {
+		compressor: {
+			default: {ratio: 12, threshold: -24, attack: .003, release: .025, knee: 30},
+			mild: {ratio: 4, threshold: -12, attack: .003, release: .025, knee : 20}
+		}
+	};
 	
 	// The Sound constructor.
 	// Accepts a URL of the sound file to be created.
@@ -34,7 +42,6 @@ typeof function(window){
 	    data.convolvers = {};
 	    data.ready = false;
 	    data.volume = 1;
-	    data.threshold = 0;
 	    data.element.src = data.url;
 	    data.element.addEventListener('canplaythrough', function(){
 	        self.connect();
@@ -152,7 +159,7 @@ typeof function(window){
 	    this.get('gainNode').connect( this.get('analyser') );
 	    this.get('analyser').connect( this.get('processor') );
 	    this.get('processor').connect( this.get('context').destination );
-	    this.compressor('threshold', 0);
+	    this.compressor({ratio:1, threshold:0});
 	    this.set('ready', true);
 	    this.trigger('ready');
 	    return this;
@@ -364,21 +371,25 @@ typeof function(window){
 	// Ex: Set multiple compressor properties.
 	// sound.compressor({ratio: 4, threshold: 24, knee: 6}); // returns `this`.
 	//
-	// Ex: Turn the compressor off (this just sets threshold to 0)
-	// sound.compressor(); // returns `this`.
+	// Ex: Set the compressor using a preset.
+	// sound.compressor('default'); //returns `this`. 
 	//
-	// If you you the last example as your lazy method to disable compression,
-	// remember that you'll need to set the threshold again next time you use it.
+	// Ex: Turn the compressor off. 
+	// sound.compressor('off'); // returns `this`.
+	//
+	// Compressors are initialized with a ratio of 1 and a threshold of zero,
+	// which means it's off. Both values need to be set for the compressor to function.
 	Sound.prototype.compressor = function( param, val ){
 	    if ( !param ) {
 	        this.get('compressorNode').threshold.value = 0;
 	        return this;
 	    }
+	    if ( !val && typeof param === 'string' ){
+	    	param = presets.compressor[param] || undefined;
+	    }
 	    if ( typeof param === 'object' )
 	        for ( var key in param )
 	            this.compressor(key, param[key]);
-	    if ( this.get('compressorNode').threshold.value == 0 )
-	    	this.get('compressorNode').threshold.value = this.get('threshold');
 	    switch ( param ){
 	    	// The speed with which the compressor begins attenuating
 	    	// once the signal has risen above the threshold.
@@ -401,7 +412,6 @@ typeof function(window){
 	        // Default (in Chrome) is -24.
 	        case 'threshold':
 	            if ( typeof val === 'undefined') return this.get('compressorNode').threshold.value;
-	            this.set('threshold', val);
 	            this.get('compressorNode').threshold.value = this.get('_threshold');
 	            break;
 	        // The ratio at which signals above the threshold will be attenuated.
