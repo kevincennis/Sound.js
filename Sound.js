@@ -9,7 +9,8 @@ typeof function(window){
 	var presets = {
 		compressor: {
 			default: {ratio: 12, threshold: -24, attack: .003, release: .025, knee: 30},
-			mild: {ratio: 4, threshold: -12, attack: .003, release: .025, knee : 20},
+			mild: {ratio: 3, threshold: -18, attack: .003, release: .025, knee : 26},
+			heavy: {ratio: 10, threshold: -24, attack: .008, release: .015, knee : 20},
 			off: {ratio: 1, threshold: 0}
 		}
 	};
