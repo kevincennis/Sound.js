@@ -9,7 +9,8 @@ typeof function(window){
 	var presets = {
 		compressor: {
 			default: {ratio: 12, threshold: -24, attack: .003, release: .025, knee: 30},
-			mild: {ratio: 4, threshold: -12, attack: .003, release: .025, knee : 20}
+			mild: {ratio: 4, threshold: -12, attack: .003, release: .025, knee : 20},
+			off: {ratio: 1, threshold: 0}
 		}
 	};
 	
@@ -160,7 +161,7 @@ typeof function(window){
 	    this.get('gainNode').connect( this.get('analyser') );
 	    this.get('analyser').connect( this.get('processor') );
 	    this.get('processor').connect( this.get('context').destination );
-	    if ( !this.get('initCompressor') ) this.compressor({ratio:1, threshold:0});
+	    if ( !this.get('initCompressor') ) this.compressor('off');
 	    this.set('ready', true);
 	    this.trigger('ready');
 	    return this;
