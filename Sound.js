@@ -440,6 +440,9 @@ typeof function(window){
 	// sound.addConvonvolver('plate', 'plate.wav', 0.7, function(){
 	//     this.play();
 	// });
+    //
+    // Note: all convolvers are initiialized with a gain of 0 unless you explicitly
+    // pass a value.
 	Sound.prototype.addConvolver = function( name, url, gain, callback ){
 	    var self = this, request = new XMLHttpRequest();
 	    if ( this.get('convolvers')[name] ) return this;
