@@ -12,7 +12,9 @@ typeof function(window){
 	// All Sound methods that do not explicitly return a value 
 	// will return `this` for chainability.
 	window.Sound = function( url ){
-	    var self = this, data = {}, guid = Date.now() + '_' + Math.floor( Math.random() * 0xFFFFFFFF ).toString(16);
+	    var self = this, 
+	        data = {}, 
+	        guid = Date.now() + '_' + Math.floor( Math.random() * 0xFFFFFFFF ).toString(16);
 	    this.__defineGetter__('_guid', function(){ return guid });
 	    data.events = {};
 	    data.url = url;
