@@ -15,6 +15,8 @@ Web Audio with (slightly) less confusion
 - Fades.
 - Free sandwiches.
 
-This library is in its infancy. There are things that suck, and a lot of things missing.
+Documentation is forthcoming, although the code is reasonably well-commented. 
 
-I'm hoping to change that. Any feedback or pull requests are enormously welcome. I'd love to see more developers working with the Web Audio APi.
+This library is in its infancy. There are things that suck, and a lot of things missing. I'm hoping to change that. 
+
+Any feedback or pull requests are enormously welcome. I'd love to see more developers working with the Web Audio APi.
