@@ -409,9 +409,8 @@ typeof function(window){
 	// which means it's off. Both values need to be set for the compressor to function.
 	Sound.prototype.compressor = function( param, val ){
 	    if ( !param ) return this;
-	    if ( typeof val === 'undefined' && typeof param === 'string' && param !== 'reduction' ){
+	    if ( typeof val === 'undefined' && typeof param === 'string' && param !== 'reduction' )
 	    	param = presets.compressor[param] || undefined;
-	    }
 	    if ( typeof param === 'object' )
 	        for ( var key in param )
 	            this.compressor(key, param[key]);
