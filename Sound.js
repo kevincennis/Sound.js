@@ -144,7 +144,7 @@ typeof function(window){
     // sound.trigger('ready');
     Sound.prototype.trigger = function( evt ){
         var args = Array.prototype.slice.call(arguments, 1);
-        if ( !this.get('events')[evt] ) return;
+        if ( !this.get('events')[evt] ) return this;
         for ( var i = 0, l = this.get('events')[evt].length; i < l;  i++ )
             this.get('events')[evt][i].apply(this, args);
         return this;
